@@ -17,7 +17,7 @@ struct PokemonCalcCrossApp: App {
     }
 
     var body: some Scene {
-        WindowGroup("PokemonCalcCross") {
+        WindowGroup(appTitle) {
             VStack(spacing: 30) {
                 Picker(of: viewsKeys, selection: $selectedViewKey)
                     .pickerStyle(.segmented)
