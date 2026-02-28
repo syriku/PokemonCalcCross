@@ -1,0 +1,23 @@
+// swift-tools-version: 5.10
+
+import PackageDescription
+
+let package = Package(
+    name: "PokemonCalcCross",
+    platforms: [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .macCatalyst(.v13)],
+    dependencies: [
+        .package(
+            url: "https://github.com/moreSwift/swift-cross-ui",
+            revision: "844085ab10485dbe63ad87effd473ca3124d2e2f"
+        )
+    ],
+    targets: [
+        .executableTarget(
+            name: "PokemonCalcCross",
+            dependencies: [
+                .product(name: "SwiftCrossUI", package: "swift-cross-ui"),
+                .product(name: "DefaultBackend", package: "swift-cross-ui")
+            ]
+        )
+    ]
+)

@@ -1,0 +1,6 @@
+format_version = 2
+
+[apps.PokemonCalcCross]
+identifier = 'com.example.PokemonCalcCross'
+product = 'PokemonCalcCross'
+version = '0.1.0'
