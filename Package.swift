@@ -8,7 +8,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/moreSwift/swift-cross-ui",
-            revision: "844085ab10485dbe63ad87effd473ca3124d2e2f"
+            revision: "611e31651031bffcc7db6d3544805c54aedab338"
         )
     ],
     targets: [
@@ -16,7 +16,7 @@ let package = Package(
             name: "PokemonCalcCross",
             dependencies: [
                 .product(name: "SwiftCrossUI", package: "swift-cross-ui"),
-                .product(name: "DefaultBackend", package: "swift-cross-ui")
+                .product(name: "DefaultBackend", package: "swift-cross-ui"),
             ]
         )
     ]

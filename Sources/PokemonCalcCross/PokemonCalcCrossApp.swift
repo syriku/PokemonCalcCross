@@ -10,25 +10,10 @@ struct PokemonCalcCrossApp: App {
 
     var body: some Scene {
         WindowGroup("PokemonCalcCross") {
-            NavigationStack(path: $navigationPath) {
-                HStack {
-                    NavigationLink(viewsKeys[0], value: viewsKeys[0], path: $navigationPath)
-                    NavigationLink(viewsKeys[1], value: viewsKeys[1], path: $navigationPath)
-                }
+            VStack {
+                Picker(of: viewsKeys, selection: $selectedViewKey)
             }
-            .navigationDestination(for: String.self) { key in
-                VStack {
-                    switch key {
-                    case viewsKeys[0]:
-                        Text("Type Calculator View")
-                    case viewsKeys[1]:
-                        Text("Type Predictor View")
-                    default:
-                        Text("Unknown View")
-                    }
-                    backButton
-                }
-            }
+            .pickerStyle(.segmented)
         }
     }
 
