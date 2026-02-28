@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "PokemonCalcCross",
+    defaultLocalization: "en",
     platforms: [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .macCatalyst(.v13)],
     dependencies: [
         .package(
@@ -17,6 +18,10 @@ let package = Package(
             dependencies: [
                 .product(name: "SwiftCrossUI", package: "swift-cross-ui"),
                 .product(name: "DefaultBackend", package: "swift-cross-ui"),
+            ],
+            resources: [
+                .process("Resources"),
+//                .process("Resources/zh-Hans.lproj"),
             ]
         )
     ]

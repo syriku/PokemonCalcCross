@@ -1,4 +1,5 @@
 import DefaultBackend
+import Foundation
 import Observation
 import SwiftCrossUI
 
@@ -39,6 +40,5 @@ struct PokemonCalcCrossApp: App {
             }
             .frame(alignment: .top)
         }
-        .defaultSize(width: 400, height: 300)
     }
 }
