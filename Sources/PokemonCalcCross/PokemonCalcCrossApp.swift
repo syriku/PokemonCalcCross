@@ -15,8 +15,8 @@ struct PokemonCalcCrossApp: App {
         WindowGroup("PokemonCalcCross") {
             VStack(spacing: 30) {
                 Picker(of: viewsKeys, selection: $selectedViewKey)
-                    .frame(alignment: .top)
                     .pickerStyle(.segmented)
+                    .padding(.top, 5)
 
                 if let selectedViewKey = selectedViewKey {
                     switch selectedViewKey {
@@ -32,7 +32,8 @@ struct PokemonCalcCrossApp: App {
                 }
                 Spacer()
             }
-            .frame(maxWidth: .infinity, alignment: .top)
+            .frame(alignment: .top)
         }
+        .defaultSize(width: 400, height: 300)
     }
 }
