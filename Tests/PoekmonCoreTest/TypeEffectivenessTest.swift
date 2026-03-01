@@ -5,13 +5,16 @@ import XCTest
 final class TypeEffectivenessTest: XCTestCase {
 
     var steelEffectiveness: TypeEffectiveness!
+    var waterFireEffectiveness: TypeEffectiveness!
 
     override func setUpWithError() throws {
         steelEffectiveness = TypeEffectiveness(.steel)
+        waterFireEffectiveness = TypeEffectiveness(type1: .water, type2: .fire)
     }
 
     override func tearDownWithError() throws {
         steelEffectiveness = nil
+        waterFireEffectiveness = nil
     }
 
     // MARK: - 钢系防御测试
@@ -82,6 +85,137 @@ final class TypeEffectivenessTest: XCTestCase {
         XCTAssertTrue(
             quadWeaknesses.isEmpty,
             "钢系不应有四倍弱点，实际存在：\(quadWeaknesses.map(\.rawValue))"
+        )
+    }
+
+    // MARK: - 水/火 双属性防御测试
+
+    /// 水/火系有 3 个弱点：地面、岩石、电
+    func testWaterFireHas3Weaknesses() throws {
+        let weaknesses = waterFireEffectiveness.defenseSide.doubleDamageFrom
+        XCTAssertEqual(
+            weaknesses.count, 3,
+            "水/火系应有 3 个弱点，实际为 \(weaknesses.count)：\(weaknesses.map(\.rawValue))"
+        )
+    }
+
+    func testWaterFireWeaknesses() throws {
+        let weaknesses = waterFireEffectiveness.defenseSide.doubleDamageFrom
+        let expected: [PkmRawType] = [.ground, .rock, .electric]
+        for type_ in expected {
+            XCTAssertTrue(
+                weaknesses.contains(type_),
+                "水/火系应该弱于 \(type_.rawValue)，但未在弱点列表中找到"
+            )
+        }
+    }
+
+    /// 水/火系有 2 个半减抗性：虫、妖精
+    func testWaterFireHas2Resistances() throws {
+        let resistances = waterFireEffectiveness.defenseSide.halfDamageFrom
+        XCTAssertEqual(
+            resistances.count, 2,
+            "水/火系应有 2 个半减抗性，实际为 \(resistances.count)：\(resistances.map(\.rawValue))"
+        )
+    }
+
+    func testWaterFireResistances() throws {
+        let resistances = waterFireEffectiveness.defenseSide.halfDamageFrom
+        let expected: [PkmRawType] = [.bug, .fairy]
+        for type_ in expected {
+            XCTAssertTrue(
+                resistances.contains(type_),
+                "水/火系应该半减 \(type_.rawValue)，但未在抗性列表中找到"
+            )
+        }
+    }
+
+    /// 水/火系有 3 个四分之一抗性：钢、火、冰
+    func testWaterFireHas3QuarterResistances() throws {
+        let quarterResistances = waterFireEffectiveness.defenseSide.quarterDamageFrom
+        XCTAssertEqual(
+            quarterResistances.count, 3,
+            "水/火系应有 3 个四分之一抗性，实际为 \(quarterResistances.count)：\(quarterResistances.map(\.rawValue))"
+        )
+    }
+
+    func testWaterFireQuarterResistances() throws {
+        let quarterResistances = waterFireEffectiveness.defenseSide.quarterDamageFrom
+        let expected: [PkmRawType] = [.steel, .fire, .ice]
+        for type_ in expected {
+            XCTAssertTrue(
+                quarterResistances.contains(type_),
+                "水/火系应该四分之一抗 \(type_.rawValue)，但未在抗性列表中找到"
+            )
+        }
+    }
+
+    /// 水/火系不应有四倍弱点
+    func testWaterFireHasNoQuadrupleWeakness() throws {
+        let quadWeaknesses = waterFireEffectiveness.defenseSide.quadrupleDamageFrom
+        XCTAssertTrue(
+            quadWeaknesses.isEmpty,
+            "水/火系不应有四倍弱点，实际存在：\(quadWeaknesses.map(\.rawValue))"
+        )
+    }
+
+    /// 水/火系没有免疫
+    func testWaterFireHasNoImmunities() throws {
+        let immunities = waterFireEffectiveness.defenseSide.noDamageFrom
+        XCTAssertTrue(
+            immunities.isEmpty,
+            "水/火系不应有免疫，实际存在：\(immunities.map(\.rawValue))"
+        )
+    }
+
+    // MARK: - 水/火 双属性攻击测试
+
+    /// 水/火系有 7 个克制：地面、岩石、火、虫、钢、草、冰
+    func testWaterFireHas7SuperEffectiveTargets() throws {
+        let superEffective = waterFireEffectiveness.attackSide.doubleDamageTo
+        XCTAssertEqual(
+            superEffective.count, 7,
+            "水/火系应有 7 个克制，实际为 \(superEffective.count)：\(superEffective.map(\.rawValue))"
+        )
+    }
+
+    func testWaterFireSuperEffectiveTargets() throws {
+        let superEffective = waterFireEffectiveness.attackSide.doubleDamageTo
+        let expected: [PkmRawType] = [.ground, .rock, .fire, .bug, .steel, .grass, .ice]
+        for type_ in expected {
+            XCTAssertTrue(
+                superEffective.contains(type_),
+                "水/火系应该克制 \(type_.rawValue)，但未在克制列表中找到"
+            )
+        }
+    }
+
+    /// 水/火系有 2 个微弱：水、龙
+    func testWaterFireHas2NotVeryEffectiveTargets() throws {
+        let notVeryEffective = waterFireEffectiveness.attackSide.halfDamageTo
+        XCTAssertEqual(
+            notVeryEffective.count, 2,
+            "水/火系应有 2 个微弱，实际为 \(notVeryEffective.count)：\(notVeryEffective.map(\.rawValue))"
+        )
+    }
+
+    func testWaterFireNotVeryEffectiveTargets() throws {
+        let notVeryEffective = waterFireEffectiveness.attackSide.halfDamageTo
+        let expected: [PkmRawType] = [.water, .dragon]
+        for type_ in expected {
+            XCTAssertTrue(
+                notVeryEffective.contains(type_),
+                "水/火系应该微弱于 \(type_.rawValue)，但未在微弱列表中找到"
+            )
+        }
+    }
+
+    /// 水/火系没有无效
+    func testWaterFireHasNoIneffectiveTargets() throws {
+        let noDamage = waterFireEffectiveness.attackSide.noDamageTo
+        XCTAssertTrue(
+            noDamage.isEmpty,
+            "水/火系不应有无效目标，实际存在：\(noDamage.map(\.rawValue))"
         )
     }
 }

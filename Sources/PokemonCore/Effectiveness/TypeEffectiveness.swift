@@ -9,18 +9,16 @@ public struct TypeEffectiveness {
     public let defenseSide: EffectivenessDefenseSide
     public let attackSide: EffectivenessAttackSide
 
-    /// Creates a `TypeEffectiveness` value for a **single-type** Pokémon.
-    ///
-    /// - Parameter type1: The sole type of the Pokémon.
-    ///
-    /// `defenseSide` shows which attacking types deal quadruple / double / half /
-    /// quarter / no damage to this type.
-    /// `attackSide` shows which defending types this type deals quadruple / double /
-    /// half / quarter / no damage to.
     public init(_ type1: PkmRawType) {
         self.pkmType = (type1, .noType)
         self.defenseSide = EffectivenessDefenseSide(type1)
         self.attackSide = EffectivenessAttackSide(type1)
+    }
+
+    public init(type1: PkmRawType, type2: PkmRawType) {
+        self.pkmType = (type1, type2)
+        self.defenseSide = EffectivenessDefenseSide(type1: type1, type2: type2)
+        self.attackSide = EffectivenessAttackSide(type1: type1, type2: type2)
     }
 }
 
@@ -69,6 +67,39 @@ public struct EffectivenessDefenseSide {
         self.quarterDamageFrom = quarter
         self.noDamageFrom = none
     }
+
+    init(type1: PkmRawType, type2: PkmRawType) {
+        let factors1 = typeEffectivenessRawByDefensive(type1)
+        let factors2 = typeEffectivenessRawByDefensive(type2)
+
+        var quadruple: [PkmRawType] = []
+        var double: [PkmRawType] = []
+        var half: [PkmRawType] = []
+        var quarter: [PkmRawType] = []
+        var none: [PkmRawType] = []
+
+        for index in 0..<factors1.count {
+            let attackingType = PkmRawType(index: index)
+            guard attackingType != .noType else { continue }
+
+            let combinedFactor = factors1[index] * factors2[index]
+
+            switch combinedFactor {
+            case 4.0: quadruple.append(attackingType)
+            case 2.0: double.append(attackingType)
+            case 0.5: half.append(attackingType)
+            case 0.25: quarter.append(attackingType)
+            case 0.0: none.append(attackingType)
+            default: break
+            }
+        }
+
+        self.quadrupleDamageFrom = quadruple
+        self.doubleDamageFrom = double
+        self.halfDamageFrom = half
+        self.quarterDamageFrom = quarter
+        self.noDamageFrom = none
+    }
 }
 
 /// Describes how much damage an attacking Pokémon **deals** to each defending type.
@@ -101,6 +132,39 @@ public struct EffectivenessAttackSide {
             guard defendingType != .noType else { continue }
 
             switch factor {
+            case 4.0: quadruple.append(defendingType)
+            case 2.0: double.append(defendingType)
+            case 0.5: half.append(defendingType)
+            case 0.25: quarter.append(defendingType)
+            case 0.0: none.append(defendingType)
+            default: break
+            }
+        }
+
+        self.quadrupleDamageTo = quadruple
+        self.doubleDamageTo = double
+        self.halfDamageTo = half
+        self.quarterDamageTo = quarter
+        self.noDamageTo = none
+    }
+
+    init(type1: PkmRawType, type2: PkmRawType) {
+        let factors1 = typeEffectivenessByOffensive(type1)
+        let factors2 = typeEffectivenessByOffensive(type2)
+
+        var quadruple: [PkmRawType] = []
+        var double: [PkmRawType] = []
+        var half: [PkmRawType] = []
+        var quarter: [PkmRawType] = []
+        var none: [PkmRawType] = []
+
+        for index in 0..<factors1.count {
+            let defendingType = PkmRawType(index: index)
+            guard defendingType != .noType else { continue }
+
+            let combinedFactor = max(factors1[index], factors2[index])  // Offensive multipliers stack by taking the maximum
+
+            switch combinedFactor {
             case 4.0: quadruple.append(defendingType)
             case 2.0: double.append(defendingType)
             case 0.5: half.append(defendingType)
