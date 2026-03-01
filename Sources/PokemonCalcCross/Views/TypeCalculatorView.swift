@@ -3,34 +3,67 @@ import SwiftCrossUI
 
 struct TypeCalculatorView: View {
     let typeKeys = PkmType.allCases.map { $0.rawValue }
-    let typeKeysLocalized: Dictionary<String, String>
+    let typeKeysLocalized: [String: String]
     let localizedKeys: [String]
-    @State var selectedType1Key: String?
-    @State var selectedType2Key: String?
+    @State var selectedType1Key: PkmType?
+    @State var selectedType2Key: PkmType?
 
     init() {
-        var temp: [String: String] = [:]
-        for it in typeKeys {
-            temp[it] = NSLocalizedString(it, bundle: .module, comment: "type name")
-        }
-        typeKeysLocalized = temp
-        localizedKeys = typeKeys.map { temp[$0] ?? $0 }
-        selectedType1Key = typeKeysLocalized[PkmType.noType.rawValue]
-        selectedType2Key = typeKeysLocalized[PkmType.noType.rawValue]
+        // var temp: [String: String] = [:]
+        // for it in typeKeys {
+        //     temp[it] = localized(it)
+        // }
+        // typeKeysLocalized = temp
+        localizedKeys = typeKeys.map({ it in localized(it) })
+        // typeKeysLocalized = Dictionary(uniqueKeysWithValues: zip(typeKeys, localizedKeys))
+        typeKeysLocalized = Dictionary(uniqueKeysWithValues: zip(localizedKeys, typeKeys))
+        // selectedType1Key = typeKeysLocalized[PkmType.noType.rawValue]
+        // selectedType2Key = typeKeysLocalized[PkmType.noType.rawValue]
+        selectedType1Key = .noType
+        selectedType2Key = .noType
     }
-    
+
     var body: some View {
         VStack {
-            Text("Type Calculator")
+            Text(localized(typeCalculatorTitle))
                 .font(.title)
                 .padding()
                 .padding(.bottom, 20)
-            
-            // first type
-            Picker(of: localizedKeys, selection: $selectedType1Key)
-                .padding(.bottom, 5)
-            // second type
-            Picker(of: localizedKeys, selection: $selectedType2Key)
+
+            HStack {
+                // pick
+                VStack {  // first type
+                    Picker(
+                        of: localizedKeys,
+                        selection: Binding(
+                            get: {
+                                localized(selectedType1Key!.rawValue)
+                            },
+                            set: {
+                                selectedType1Key = PkmType(
+                                    rawValue: typeKeysLocalized[$0!] ?? "No Type")
+                            }
+                        )
+                    )
+                    .padding(.bottom, 5)
+                    // second type
+                    Picker(
+                        of: localizedKeys,
+                        selection: Binding(
+                            get: {
+                                localized(selectedType2Key!.rawValue)
+                            },
+                            set: {
+                                selectedType2Key = PkmType(
+                                    rawValue: typeKeysLocalized[$0!] ?? "No Type")
+                            }
+                        ))
+                }
+
+                // action
+
+                // result
+            }
         }
     }
 }

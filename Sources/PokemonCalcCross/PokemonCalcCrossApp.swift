@@ -5,24 +5,34 @@ import SwiftCrossUI
 
 @main
 struct PokemonCalcCrossApp: App {
-    enum ViewRoute: String, CaseIterable {
-        case typeCalculator = "Type Calculator"
-        case typePredictor = "Type Predictor"
-    }
 
     let viewsKeys = ViewRoute.allCases.map { $0.rawValue }
+
     @State var selectedViewKey: String?
 
     init() {
+
         selectedViewKey = viewsKeys.first
+
     }
 
     var body: some Scene {
-        WindowGroup(appTitle) {
+        WindowGroup(localized(appTitle)) {
             VStack(spacing: 30) {
-                Picker(of: viewsKeys, selection: $selectedViewKey)
-                    .pickerStyle(.segmented)
-                    .padding(.top, 5)
+                Picker(
+                    of: viewsKeys.map { localized($0) },
+                    selection: Binding(
+                        get: {
+                            localized(selectedViewKey!)
+                        },
+                        set: { it in
+                            selectedViewKey = viewsKeys.first(where: {
+                                localized($0) == it
+                            })
+                        })
+                )
+                .pickerStyle(.segmented)
+                .padding(.top, 5)
 
                 if let selectedViewKey = selectedViewKey,
                     let route = ViewRoute(rawValue: selectedViewKey)

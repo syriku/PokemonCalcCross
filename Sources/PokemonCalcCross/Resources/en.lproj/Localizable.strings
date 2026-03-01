@@ -18,3 +18,7 @@
 "Steel" = "Steel";
 "Fairy" = "Fairy";
 "No Type" = "No Type";
+
+// views
+"Type Calculator" = "Type Calculator";
+"Type Predictor" = "Type Predictor";

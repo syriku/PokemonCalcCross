@@ -18,3 +18,7 @@
 "Steel" = "钢";
 "Fairy" = "妖精";
 "No Type" = "无";
+
+// views
+"Type Calculator" = "属性计算";
+"Type Predictor" = "属性预测";
