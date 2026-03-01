@@ -5,15 +5,11 @@ struct TypeCalculatorView: View {
     let typeKeys = PkmType.allCases.map { $0.rawValue }
     let typeKeysLocalized: [String: String]
     let localizedKeys: [String]
-    @State var selectedType1Key: PkmType?
-    @State var selectedType2Key: PkmType?
+    let vm: TypeCalculatorVm = TypeCalculatorVm()
 
     init() {
         localizedKeys = typeKeys.map({ it in localized(it) })
         typeKeysLocalized = Dictionary(uniqueKeysWithValues: zip(localizedKeys, typeKeys))
-
-        selectedType1Key = .noType
-        selectedType2Key = .noType
     }
 
     var body: some View {
@@ -31,11 +27,16 @@ struct TypeCalculatorView: View {
                         of: localizedKeys,
                         selection: Binding(
                             get: {
-                                localized(selectedType1Key!.rawValue)
+                                localized(vm.selectedType1.rawValue)
                             },
                             set: {
-                                selectedType1Key = PkmType(
-                                    rawValue: typeKeysLocalized[$0!] ?? "No Type")
+                                guard let key = $0 else {
+                                    vm.selectedType1 = .noType
+                                    return
+                                }
+                                vm.selectedType1 =
+                                    PkmType(
+                                        rawValue: typeKeysLocalized[key] ?? "No Type") ?? .noType
                             }
                         )
                     )
@@ -45,11 +46,16 @@ struct TypeCalculatorView: View {
                         of: localizedKeys,
                         selection: Binding(
                             get: {
-                                localized(selectedType2Key!.rawValue)
+                                localized(vm.selectedType2.rawValue)
                             },
                             set: {
-                                selectedType2Key = PkmType(
-                                    rawValue: typeKeysLocalized[$0!] ?? "No Type")
+                                guard let key = $0 else {
+                                    vm.selectedType2 = .noType
+                                    return
+                                }
+                                vm.selectedType2 =
+                                    PkmType(
+                                        rawValue: typeKeysLocalized[key] ?? "No Type") ?? .noType
                             }
                         ))
                 }
