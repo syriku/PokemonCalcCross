@@ -1,4 +1,5 @@
 import Foundation
+import PokemonCore
 import SwiftCrossUI
 
 struct TypeCalculatorView: View {

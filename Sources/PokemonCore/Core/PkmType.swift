@@ -1,6 +1,6 @@
 import Foundation
 
-enum PkmType: String, CaseIterable {
+public enum PkmType: String, CaseIterable {
     case noType = "No Type"
     case normal = "Normal"
     case fire = "Fire"

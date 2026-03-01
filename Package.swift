@@ -13,9 +13,11 @@ let package = Package(
         )
     ],
     targets: [
+        .target(name: "PokemonCore"),
         .executableTarget(
             name: "PokemonCalcCross",
             dependencies: [
+                .target(name: "PokemonCore"),
                 .product(name: "SwiftCrossUI", package: "swift-cross-ui"),
                 .product(name: "DefaultBackend", package: "swift-cross-ui"),
             ],
@@ -23,6 +25,6 @@ let package = Package(
                 .process("Resources")
                 //                .process("Resources/zh-Hans.lproj"),
             ]
-        )
+        ),
     ]
 )
