@@ -16,7 +16,12 @@ public struct TypeEffectiveness {
     }
 
     public init(type1: PkmRawType, type2: PkmRawType) {
-        self.pkmType = (type1, type2)
+        if type1 == .noType && type2 != .noType {
+            self.pkmType = (type2, .noType)
+        } else {
+            self.pkmType = (type1, type2)
+        }
+
         self.defenseSide = EffectivenessDefenseSide(type1: type1, type2: type2)
         self.attackSide = EffectivenessAttackSide(type1: type1, type2: type2)
     }
