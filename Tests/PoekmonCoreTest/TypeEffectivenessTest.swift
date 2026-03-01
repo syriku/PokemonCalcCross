@@ -172,7 +172,7 @@ final class TypeEffectivenessTest: XCTestCase {
 
     /// 水/火系有 7 个克制：地面、岩石、火、虫、钢、草、冰
     func testWaterFireHas7SuperEffectiveTargets() throws {
-        let superEffective = waterFireEffectiveness.attackSide.doubleDamageTo
+        let superEffective = waterFireEffectiveness.offenseSide.doubleDamageTo
         XCTAssertEqual(
             superEffective.count, 7,
             "水/火系应有 7 个克制，实际为 \(superEffective.count)：\(superEffective.map(\.rawValue))"
@@ -180,7 +180,7 @@ final class TypeEffectivenessTest: XCTestCase {
     }
 
     func testWaterFireSuperEffectiveTargets() throws {
-        let superEffective = waterFireEffectiveness.attackSide.doubleDamageTo
+        let superEffective = waterFireEffectiveness.offenseSide.doubleDamageTo
         let expected: [PkmRawType] = [.ground, .rock, .fire, .bug, .steel, .grass, .ice]
         for type_ in expected {
             XCTAssertTrue(
@@ -192,7 +192,7 @@ final class TypeEffectivenessTest: XCTestCase {
 
     /// 水/火系有 2 个微弱：水、龙
     func testWaterFireHas2NotVeryEffectiveTargets() throws {
-        let notVeryEffective = waterFireEffectiveness.attackSide.halfDamageTo
+        let notVeryEffective = waterFireEffectiveness.offenseSide.halfDamageTo
         XCTAssertEqual(
             notVeryEffective.count, 2,
             "水/火系应有 2 个微弱，实际为 \(notVeryEffective.count)：\(notVeryEffective.map(\.rawValue))"
@@ -200,7 +200,7 @@ final class TypeEffectivenessTest: XCTestCase {
     }
 
     func testWaterFireNotVeryEffectiveTargets() throws {
-        let notVeryEffective = waterFireEffectiveness.attackSide.halfDamageTo
+        let notVeryEffective = waterFireEffectiveness.offenseSide.halfDamageTo
         let expected: [PkmRawType] = [.water, .dragon]
         for type_ in expected {
             XCTAssertTrue(
@@ -212,7 +212,7 @@ final class TypeEffectivenessTest: XCTestCase {
 
     /// 水/火系没有无效
     func testWaterFireHasNoIneffectiveTargets() throws {
-        let noDamage = waterFireEffectiveness.attackSide.noDamageTo
+        let noDamage = waterFireEffectiveness.offenseSide.noDamageTo
         XCTAssertTrue(
             noDamage.isEmpty,
             "水/火系不应有无效目标，实际存在：\(noDamage.map(\.rawValue))"

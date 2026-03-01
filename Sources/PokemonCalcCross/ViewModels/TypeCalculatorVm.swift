@@ -1,9 +1,16 @@
-import Foundation
-import Observation
 import PokemonCore
+import SwiftCrossUI
 
-@Observable
-class TypeCalculatorVm {
-    var selectedType1: PkmRawType = .noType
-    var selectedType2: PkmRawType = .noType
+class TypeCalculatorVm: ObservableObject {
+    @Published var selectedType1: PkmRawType = .noType {
+        didSet {
+            typeEffectiveness = nil
+        }
+    }
+    @Published var selectedType2: PkmRawType = .noType {
+        didSet {
+            typeEffectiveness = nil
+        }
+    }
+    @Published var typeEffectiveness: TypeEffectiveness? = nil
 }

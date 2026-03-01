@@ -7,12 +7,12 @@
 public struct TypeEffectiveness {
     public let pkmType: (PkmRawType, PkmRawType)
     public let defenseSide: EffectivenessDefenseSide
-    public let attackSide: EffectivenessAttackSide
+    public let offenseSide: EffectivenessAttackSide
 
     public init(_ type1: PkmRawType) {
         self.pkmType = (type1, .noType)
         self.defenseSide = EffectivenessDefenseSide(type1)
-        self.attackSide = EffectivenessAttackSide(type1)
+        self.offenseSide = EffectivenessAttackSide(type1)
     }
 
     public init(type1: PkmRawType, type2: PkmRawType) {
@@ -23,7 +23,7 @@ public struct TypeEffectiveness {
         }
 
         self.defenseSide = EffectivenessDefenseSide(type1: type1, type2: type2)
-        self.attackSide = EffectivenessAttackSide(type1: type1, type2: type2)
+        self.offenseSide = EffectivenessAttackSide(type1: type1, type2: type2)
     }
 }
 

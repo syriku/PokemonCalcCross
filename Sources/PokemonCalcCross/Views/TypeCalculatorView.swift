@@ -6,11 +6,64 @@ struct TypeCalculatorView: View {
     let typeKeys = PkmRawType.allCases.map { $0.rawValue }
     let typeKeysLocalized: [String: String]
     let localizedKeys: [String]
-    let vm: TypeCalculatorVm = TypeCalculatorVm()
+    @State var vm: TypeCalculatorVm = TypeCalculatorVm()
 
     init() {
         localizedKeys = typeKeys.map({ it in localized(it) })
         typeKeysLocalized = Dictionary(uniqueKeysWithValues: zip(localizedKeys, typeKeys))
+    }
+
+    var effectivenessDefenseSideData: [[PkmRawType]] {
+        [
+            vm.typeEffectiveness?.defenseSide.quadrupleDamageFrom ?? [],
+            vm.typeEffectiveness?.defenseSide.doubleDamageFrom ?? [],
+            vm.typeEffectiveness?.defenseSide.halfDamageFrom ?? [],
+            vm.typeEffectiveness?.defenseSide.quarterDamageFrom ?? [],
+            vm.typeEffectiveness?.defenseSide.noDamageFrom ?? [],
+        ]
+    }
+
+    var effectivenessOffenseSideData: [[PkmRawType]] {
+        [
+            vm.typeEffectiveness?.offenseSide.quadrupleDamageTo ?? [],
+            vm.typeEffectiveness?.offenseSide.doubleDamageTo ?? [],
+            vm.typeEffectiveness?.offenseSide.halfDamageTo ?? [],
+            vm.typeEffectiveness?.offenseSide.quarterDamageTo ?? [],
+            vm.typeEffectiveness?.offenseSide.noDamageTo ?? [],
+        ]
+    }
+
+    struct EffectivenessRow: Identifiable {
+        let id = UUID()
+        let multiplier: String
+        let defense: String
+        let offense: String
+    }
+
+    private func formatTypes(_ types: [PkmRawType]) -> String {
+        let string = types.map { localized($0.rawValue) }.joined(separator: ", ")
+        return string.isEmpty ? "-" : string
+    }
+
+    var tableData: [EffectivenessRow] {
+        let multipliers = ["x4", "x2", "x0.5", "x0.25", "x0"]
+        var rows: [EffectivenessRow] = []
+
+        for i in 0..<5 {
+            let defStr = formatTypes(effectivenessDefenseSideData[i])
+            let offStr = formatTypes(effectivenessOffenseSideData[i])
+
+            // 过滤掉两端都为空（都是 "-"）的倍率行
+            if defStr != "-" || offStr != "-" {
+                rows.append(
+                    EffectivenessRow(
+                        multiplier: multipliers[i],
+                        defense: defStr,
+                        offense: offStr
+                    ))
+            }
+        }
+        return rows
     }
 
     var body: some View {
@@ -37,7 +90,8 @@ struct TypeCalculatorView: View {
                                 }
                                 vm.selectedType1 =
                                     PkmRawType(
-                                        rawValue: typeKeysLocalized[key] ?? "No Type") ?? .noType
+                                        rawValue: typeKeysLocalized[key] ?? "No Type")
+                                    ?? .noType
                             }
                         )
                     )
@@ -56,15 +110,46 @@ struct TypeCalculatorView: View {
                                 }
                                 vm.selectedType2 =
                                     PkmRawType(
-                                        rawValue: typeKeysLocalized[key] ?? "No Type") ?? .noType
+                                        rawValue: typeKeysLocalized[key] ?? "No Type")
+                                    ?? .noType
                             }
                         ))
-                }
+                }  // VStack
 
                 // action
+                VStack {
+                    Button(localized("tc.clearButton")) {
+                        clear()
+                    }
+                    .padding(.bottom, 5)
 
+                    Button(localized("tc.calcButton")) {
+                        Task(priority: .userInitiated) {
+                            let effectiveness = TypeEffectiveness(
+                                type1: vm.selectedType1, type2: vm.selectedType2)
+                            await MainActor.run {
+                                vm.typeEffectiveness = effectiveness
+                            }
+                        }
+                    }
+                }
                 // result
-            }
-        }
+                if vm.typeEffectiveness != nil {
+                    Table(tableData) {
+                        TableColumn(localized("tc.multiplier"), value: \EffectivenessRow.multiplier)
+                        TableColumn(localized("tc.defenseSide"), value: \EffectivenessRow.defense)
+                        TableColumn(localized("tc.offenseSide"), value: \EffectivenessRow.offense)
+                    }
+                    .frame(width: 400, height: 150)
+                    .padding(.leading, 10)
+                }
+            }  // HStack
+        }  // VStack
+    }  // body
+
+    private func clear() {
+        vm.selectedType1 = .noType
+        vm.selectedType2 = .noType
+        vm.typeEffectiveness = nil
     }
 }

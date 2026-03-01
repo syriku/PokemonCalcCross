@@ -22,3 +22,10 @@
 // views
 "Type Calculator" = "Type Calculator";
 "Type Predictor" = "Type Predictor";
+
+// Type Calculator View
+"tc.clearButton" = "Clear";
+"tc.calcButton" = "Calculate";
+"tc.multiplier" = "Multiplier";
+"tc.defenseSide" = "Defense Side";
+"tc.offenseSide" = "Offense Side";
