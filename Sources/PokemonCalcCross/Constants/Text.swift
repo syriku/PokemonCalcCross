@@ -5,4 +5,15 @@ enum ViewRoute: String, CaseIterable {
     case typePredictor = "Type Predictor"
 }
 
-let typeCalculatorTitle = ViewRoute.typeCalculator.rawValue
+enum TypeCalculatorConst {
+    static let textKeys = [
+        "tc.clearButton",
+        "tc.calcButton",
+        "tc.multiplier",
+        "tc.defenseSide",
+        "tc.offenseSide",
+    ]
+    static let title = ViewRoute.typeCalculator.rawValue
+}
+
+let typeCalculatorMultipliers = ["x4", "x2", "x0.5", "x0.25", "x0"]

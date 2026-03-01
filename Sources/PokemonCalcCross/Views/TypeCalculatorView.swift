@@ -46,7 +46,7 @@ struct TypeCalculatorView: View {
     }
 
     var tableData: [EffectivenessRow] {
-        let multipliers = ["x4", "x2", "x0.5", "x0.25", "x0"]
+        let multipliers = typeCalculatorMultipliers
         var rows: [EffectivenessRow] = []
 
         for i in 0..<5 {
@@ -68,7 +68,7 @@ struct TypeCalculatorView: View {
 
     var body: some View {
         VStack {
-            Text(localized(typeCalculatorTitle))
+            Text(localized(TypeCalculatorConst.title))
                 .font(.title)
                 .padding()
                 .padding(.bottom, 20)
@@ -118,12 +118,12 @@ struct TypeCalculatorView: View {
 
                 // action
                 VStack {
-                    Button(localized("tc.clearButton")) {
+                    Button(localized(TypeCalculatorConst.textKeys[0])) {
                         clear()
                     }
                     .padding(.bottom, 5)
 
-                    Button(localized("tc.calcButton")) {
+                    Button(localized(TypeCalculatorConst.textKeys[1])) {
                         Task(priority: .userInitiated) {
                             let effectiveness = TypeEffectiveness(
                                 type1: vm.selectedType1, type2: vm.selectedType2)
@@ -136,9 +136,15 @@ struct TypeCalculatorView: View {
                 // result
                 if vm.typeEffectiveness != nil {
                     Table(tableData) {
-                        TableColumn(localized("tc.multiplier"), value: \EffectivenessRow.multiplier)
-                        TableColumn(localized("tc.defenseSide"), value: \EffectivenessRow.defense)
-                        TableColumn(localized("tc.offenseSide"), value: \EffectivenessRow.offense)
+                        TableColumn(
+                            localized(TypeCalculatorConst.textKeys[2]),
+                            value: \EffectivenessRow.multiplier)
+                        TableColumn(
+                            localized(TypeCalculatorConst.textKeys[3]),
+                            value: \EffectivenessRow.defense)
+                        TableColumn(
+                            localized(TypeCalculatorConst.textKeys[4]),
+                            value: \EffectivenessRow.offense)
                     }
                     .frame(width: 400, height: 150)
                     .padding(.leading, 10)
