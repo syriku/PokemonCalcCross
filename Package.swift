@@ -14,6 +14,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "PokemonCore"),
+        .testTarget(name: "PokemonCoreTest", dependencies: ["PokemonCore"]),
         .executableTarget(
             name: "PokemonCalcCross",
             dependencies: [
@@ -23,7 +24,6 @@ let package = Package(
             ],
             resources: [
                 .process("Resources")
-                //                .process("Resources/zh-Hans.lproj"),
             ]
         ),
     ]
