@@ -9,16 +9,9 @@ struct TypeCalculatorView: View {
     @State var selectedType2Key: PkmType?
 
     init() {
-        // var temp: [String: String] = [:]
-        // for it in typeKeys {
-        //     temp[it] = localized(it)
-        // }
-        // typeKeysLocalized = temp
         localizedKeys = typeKeys.map({ it in localized(it) })
-        // typeKeysLocalized = Dictionary(uniqueKeysWithValues: zip(typeKeys, localizedKeys))
         typeKeysLocalized = Dictionary(uniqueKeysWithValues: zip(localizedKeys, typeKeys))
-        // selectedType1Key = typeKeysLocalized[PkmType.noType.rawValue]
-        // selectedType2Key = typeKeysLocalized[PkmType.noType.rawValue]
+
         selectedType1Key = .noType
         selectedType2Key = .noType
     }
@@ -32,7 +25,8 @@ struct TypeCalculatorView: View {
 
             HStack {
                 // pick
-                VStack {  // first type
+                VStack {
+                    // first type
                     Picker(
                         of: localizedKeys,
                         selection: Binding(
