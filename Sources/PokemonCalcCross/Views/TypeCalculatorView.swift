@@ -3,7 +3,7 @@ import PokemonCore
 import SwiftCrossUI
 
 struct TypeCalculatorView: View {
-    let typeKeys = PkmType.allCases.map { $0.rawValue }
+    let typeKeys = PkmRawType.allCases.map { $0.rawValue }
     let typeKeysLocalized: [String: String]
     let localizedKeys: [String]
     let vm: TypeCalculatorVm = TypeCalculatorVm()
@@ -36,7 +36,7 @@ struct TypeCalculatorView: View {
                                     return
                                 }
                                 vm.selectedType1 =
-                                    PkmType(
+                                    PkmRawType(
                                         rawValue: typeKeysLocalized[key] ?? "No Type") ?? .noType
                             }
                         )
@@ -55,7 +55,7 @@ struct TypeCalculatorView: View {
                                     return
                                 }
                                 vm.selectedType2 =
-                                    PkmType(
+                                    PkmRawType(
                                         rawValue: typeKeysLocalized[key] ?? "No Type") ?? .noType
                             }
                         ))
