@@ -6,6 +6,10 @@ let package = Package(
     name: "PokemonCalcCross",
     defaultLocalization: "en",
     platforms: [.macOS(.v14)],
+    products: [
+        .executable(name: "PokemonCalc", targets: ["PokemonCalcCross"]),
+        .library(name: "PokemonCore", targets: ["PokemonCore"]),
+    ],
     dependencies: [
         .package(
             url: "https://github.com/moreSwift/swift-cross-ui",
