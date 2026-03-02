@@ -12,6 +12,10 @@ public struct PokemonType: Hashable {
         self.type2 = type2
     }
 
+    public func isIncluding(_ type: PkmRawType) -> Bool {
+        return type1 == type || type2 == type
+    }
+
     static func allComb() -> Set<Self> {
         var allTypes = Set<Self>()
         for i in 1..<PkmRawType.allCases.count {
