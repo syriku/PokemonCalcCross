@@ -1,3 +1,8 @@
+/// Used to predict possible Pokémon type combinations based on known type effectiveness information.
+///
+/// - Warning: Initialization and computation of this type are expensive operations,
+///   as they require iterating through all possible type combinations.
+///   It is recommended to perform these operations on a background thread to avoid blocking the main thread.
 public struct EffectivenessPredict {
     var candidatesEffectiveness: [PokemonType: TypeEffectiveness]
     public var candidates: [(PokemonType)] {
