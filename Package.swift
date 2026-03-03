@@ -7,7 +7,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [.macOS(.v14)],
     products: [
-        .executable(name: "PokemonCalc", targets: ["PokemonCalcCross"]),
+        .executable(name: "PokemonCalcCross", targets: ["PokemonCalcCross"]),
         .library(name: "PokemonCore", targets: ["PokemonCore"]),
     ],
     dependencies: [
