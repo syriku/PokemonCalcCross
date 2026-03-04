@@ -13,7 +13,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/moreSwift/swift-cross-ui",
-            revision: "611e31651031bffcc7db6d3544805c54aedab338"
+            from: "0.2.0"
         )
     ],
     targets: [
