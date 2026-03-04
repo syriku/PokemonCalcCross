@@ -1,15 +1,18 @@
+import Observation
+
 /// Used to predict possible Pokémon type combinations based on known type effectiveness information.
 ///
 /// - Warning: Initialization and computation of this type are expensive operations,
 ///   as they require iterating through all possible type combinations.
 ///   It is recommended to perform these operations on a background thread to avoid blocking the main thread.
-public struct EffectivenessPredict {
-    var candidatesEffectiveness: [PokemonType: TypeEffectiveness]
+@Observable
+public class EffectivenessPredict {
+    @ObservationIgnored var candidatesEffectiveness: [PokemonType: TypeEffectiveness]
     public var candidates: [(PokemonType)] {
         candidatesEffectiveness.keys.map { $0 }
     }
 
-    var effectiveness: [PkmRawType: PokemonDamageFactor] = [:]
+    @ObservationIgnored var effectiveness: [PkmRawType: PokemonDamageFactor] = [:]
 
     public init() {
         let allTypes = PokemonType.allComb()
@@ -19,12 +22,12 @@ public struct EffectivenessPredict {
         }
     }
 
-    public mutating func addEffectiveness(type: PkmRawType, factor: PokemonDamageFactor) {
+    public func addEffectiveness(type: PkmRawType, factor: PokemonDamageFactor) {
         effectiveness[type] = factor
         calcNewCandidates(type: type, factor: factor)
     }
 
-    private mutating func calcNewCandidates(type: PkmRawType, factor: PokemonDamageFactor) {
+    private func calcNewCandidates(type: PkmRawType, factor: PokemonDamageFactor) {
         var toRemove: [PokemonType] = []
         switch factor {
         case .double, .quadruple:
