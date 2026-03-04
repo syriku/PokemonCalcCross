@@ -18,6 +18,7 @@ enum TypeCalculatorConst {
 
 enum TypePredictorConst {
     static let title = ViewRoute.typePredictor.rawValue
+    static let damageReceived = "tp.damageReceived"
 }
 
 let typeCalculatorMultipliers = ["x4", "x2", "x0.5", "x0.25", "x0"]

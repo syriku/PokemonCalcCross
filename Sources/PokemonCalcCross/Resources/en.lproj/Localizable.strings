@@ -29,3 +29,14 @@
 "tc.multiplier" = "Multiplier";
 "tc.defenseSide" = "Defense Side";
 "tc.offenseSide" = "Offense Side";
+
+// Damage Factor
+"quadruple" = "Quadruple";
+"double" = "Double";
+"normal" = "Normal";
+"half" = "Half";
+"quarter" = "Quarter";
+"none" = "Immune";
+
+// Type Predictor View
+"tp.damageReceived" = "Damage Received: ";

@@ -29,3 +29,14 @@
 "tc.multiplier" = "倍率";
 "tc.defenseSide" = "作为被攻击方";
 "tc.offenseSide" = "作为攻击方";
+
+// Damage Factor
+"quadruple" = "4倍";
+"double" = "2倍";
+"normal" = "1倍";
+"half" = "½倍";
+"quarter" = "¼倍";
+"none" = "无效";
+
+// Type Predictor View
+"tp.damageReceived" = "受到的伤害：";
